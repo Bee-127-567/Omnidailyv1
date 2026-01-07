@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4483784142793299"
+     crossorigin="anonymous"></script>
+<meta charset="UTF-8"><title>JSON Formatter | Omni.Daily</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Fira Code',monospace;background:#1e1e1e;color:#d4d4d4;padding:20px;min-height:100vh}.container{max-width:1600px;margin:0 auto}.header{text-align:center;margin-bottom:40px}.header h1{font-family:'Inter',sans-serif;font-size:3.5rem;background:linear-gradient(135deg,#569cd6,#4ec9b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;min-height:600px}@media(max-width:1024px){.editor-grid{grid-template-columns:1fr}}.editor-panel{background:#252526;border:1px solid#3e3e42;border-radius:8px;display:flex;flex-direction:column}.panel-header{background:#2d2d30;padding:15px 20px;border-bottom:1px solid #3e3e42;display:flex;justify-content:space-between;align-items:center}.panel-title{font-family:'Inter',sans-serif;font-weight:700;color:#569cd6;font-size:1.1rem}.editor-textarea{flex:1;padding:20px;font-family:'Fira Code',monospace;font-size:0.95rem;line-height:1.6;color:#d4d4d4;background:#1e1e1e;border:none;resize:none;outline:none}.output-area{flex:1;padding:20px;font-family:'Fira Code',monospace;font-size:0.95rem;line-height:1.6;background:#1e1e1e;overflow:auto;white-space:pre-wrap;word-break:break-all}.controls{display:flex;gap:10px;flex-wrap:wrap}.btn{padding:8px 16px;background:#0e639c;border:none;border-radius:4px;color:#fff;font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .2s}.btn:hover{background:#1177bb}.btn-success{background:#0e7a0d}.btn-success:hover{background:#13a10e}.btn-danger{background:#f14c4c}.btn-danger:hover{background:#ff6b6b}.btn-secondary{background:#3e3e42}.btn-secondary:hover{background:#505052}.status-bar{background:#007acc;color:#fff;padding:12px 20px;text-align:center;border-radius:0 0 8px 8px;font-size:0.85rem;font-weight:600}.status-bar.error{background:#f14c4c}.status-bar.success{background:#13a10e}.keyword{color:#569cd6}.string{color:#ce9178}.number{color:#b5cea8}.boolean{color:#569cd6}.null{color:#569cd6}.key{color:#9cdcfe}</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>JSON Formatter</h1><p style="color:#8a8a8a">Format, validate, and beautify JSON data</p></div>
+<div class="editor-grid">
+<div class="editor-panel">
+<div class="panel-header">
+<div class="panel-title">📝 Input JSON</div>
+<div class="controls">
+<button class="btn btn-secondary" onclick="loadSample()">Sample</button>
+<button class="btn btn-danger" onclick="clearInput()">Clear</button>
+</div>
+</div>
+<textarea class="editor-textarea" id="input" placeholder='Paste your JSON here...'></textarea>
+<div class="status-bar" id="inputStatus">Ready</div>
+</div>
+<div class="editor-panel">
+<div class="panel-header">
+<div class="panel-title">✨ Formatted Output</div>
+<div class="controls">
+<button class="btn btn-success" onclick="formatJSON()">Format</button>
+<button class="btn" onclick="minifyJSON()">Minify</button>
+<button class="btn" onclick="validateJSON()">Validate</button>
+<button class="btn btn-secondary" onclick="copyOutput()">Copy</button>
+</div>
+</div>
+<div class="output-area" id="output">Click "Format" to process JSON</div>
+<div class="status-bar success" id="outputStatus">Awaiting input</div>
+</div>
+</div>
+</div>
+<script>
+function formatJSON(){try{const input=document.getElementById('input').value.trim();if(!input){alert('Please enter JSON');return}
+const parsed=JSON.parse(input);const formatted=JSON.stringify(parsed,null,2);const highlighted=syntaxHighlight(formatted);document.getElementById('output').innerHTML=highlighted;updateStatus('outputStatus','Valid JSON! Formatted successfully','success')}catch(e){updateStatus('outputStatus','Error: '+e.message,'error')}}
+function minifyJSON(){try{const input=document.getElementById('input').value.trim();const parsed=JSON.parse(input);const minified=JSON.stringify(parsed);document.getElementById('output').textContent=minified;updateStatus('outputStatus','Minified successfully','success')}catch(e){updateStatus('outputStatus','Error: '+e.message,'error')}}
+function validateJSON(){try{const input=document.getElementById('input').value.trim();const parsed=JSON.parse(input);const stats={keys:countKeys(parsed),arrays:countArrays(parsed),objects:countObjects(parsed)};updateStatus('outputStatus',`✓ Valid JSON | Keys: ${stats.keys} | Arrays: ${stats.arrays} | Objects: ${stats.objects}`,'success')}catch(e){updateStatus('outputStatus','✗ Invalid JSON: '+e.message,'error')}}
+function syntaxHighlight(json){return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){let cls='number';if(/^"/.test(match)){cls=/:$/.test(match)?'key':'string'}else if(/true|false/.test(match)){cls='boolean'}else if(/null/.test(match)){cls='null'}return'<span class="'+cls+'">'+match+'</span>'})}
+function countKeys(obj){if(typeof obj!=='object'||obj===null)return 0;let count=Object.keys(obj).length;for(let key in obj){count+=countKeys(obj[key])}return count}
+function countArrays(obj){if(typeof obj!=='object'||obj===null)return 0;let count=Array.isArray(obj)?1:0;for(let key in obj){count+=countArrays(obj[key])}return count}
+function countObjects(obj){if(typeof obj!=='object'||obj===null)return 0;let count=Array.isArray(obj)?0:1;for(let key in obj){count+=countObjects(obj[key])}return count}
+function updateStatus(id,message,type){const status=document.getElementById(id);status.textContent=message;status.className='status-bar '+(type||'')}
+function copyOutput(){const output=document.getElementById('output').textContent;navigator.clipboard.writeText(output).then(()=>alert('Copied to clipboard!'))}
+function clearInput(){document.getElementById('input').value='';document.getElementById('output').textContent='Click "Format" to process JSON';updateStatus('inputStatus','Ready','')}
+function loadSample(){document.getElementById('input').value=`{"user":{"name":"John Doe","email":"john@example.com","age":30,"active":true,"roles":["admin","editor"],"metadata":{"created":"2024-01-01","updated":null}},"settings":{"theme":"dark","notifications":true}}`}
+document.getElementById('input').addEventListener('input',function(){const text=this.value.trim();if(text){try{JSON.parse(text);updateStatus('inputStatus','✓ Valid JSON','success')}catch{updateStatus('inputStatus','✗ Invalid JSON - check syntax','error')}}else{updateStatus('inputStatus','Ready','')}})
+</script>
+</body>
+</html>

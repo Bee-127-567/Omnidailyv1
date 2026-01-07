@@ -1,0 +1,3 @@
+# Ads.txt file for Omni.Daily - https://omnidaily.netlify.app/
+# Generated for Google AdSense integration
+google.com, pub-4483784142793299, DIRECT, f08c47fec0942fa0

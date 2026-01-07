@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Minifier - Omni.Daily</title>
+    <meta name="description" content="Minify CSS code to reduce file size. Free CSS minifier.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        textarea { width: 100%; min-height: 250px; padding: 1rem; border: 2px solid var(--border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95rem; resize: vertical; margin-bottom: 1rem; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; margin-bottom: 1rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: var(--text-light); }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+        .stat-box { background: var(--surface); padding: 1rem; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } .stats { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="developer.html">Developer</a> / CSS Minifier</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🎨 CSS Minifier</h1>
+            <p>Minify CSS code to reduce file size</p>
+        </div>
+        <div class="tool-content">
+            <label>Input CSS</label>
+            <textarea id="input" placeholder="Paste your CSS code here..."></textarea>
+            <button class="btn" onclick="minify()">Minify CSS</button>
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-box">
+                    <div class="stat-value" id="originalSize">0</div>
+                    <div>Original Size</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="minifiedSize">0</div>
+                    <div>Minified Size</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="saved">0%</div>
+                    <div>Saved</div>
+                </div>
+            </div>
+            <label>Minified CSS</label>
+            <textarea id="output" placeholder="Minified CSS will appear here..." readonly></textarea>
+            <button class="btn btn-secondary" onclick="copyResult()">Copy Minified CSS</button>
+        </div>
+    </div>
+    <script>
+        function minify() {
+            const input = document.getElementById('input').value;
+            if (!input) return;
+            
+            let minified = input
+                .replace(/\/\*[\s\S]*?\*\//g, '')
+                .replace(/\s+/g, ' ')
+                .replace(/\s*{\s*/g, '{')
+                .replace(/\s*}\s*/g, '}')
+                .replace(/\s*;\s*/g, ';')
+                .replace(/\s*:\s*/g, ':')
+                .replace(/\s*,\s*/g, ',')
+                .replace(/;\s*}/g, '}')
+                .trim();
+            
+            document.getElementById('output').value = minified;
+            
+            const originalSize = new Blob([input]).size;
+            const minifiedSize = new Blob([minified]).size;
+            const saved = ((originalSize - minifiedSize) / originalSize * 100).toFixed(1);
+            
+            document.getElementById('originalSize').textContent = formatSize(originalSize);
+            document.getElementById('minifiedSize').textContent = formatSize(minifiedSize);
+            document.getElementById('saved').textContent = saved + '%';
+            document.getElementById('stats').style.display = 'grid';
+        }
+        
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+        
+        function copyResult() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy Minified CSS', 2000);
+        }
+    </script>
+</body>
+</html>

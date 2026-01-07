@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design & Media Tools - Omni.Daily</title>
+    <meta name="description" content="7 professional design and media tools - color tools, image processing, and creative utilities. Free and easy to use.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .category-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tools-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #f093fb;
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tool-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .tool-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            background: var(--surface);
+            color: var(--primary);
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tool-badge.new {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        footer {
+            background: var(--surface);
+            margin-top: 4rem;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / Design & Media
+            </div>
+        </div>
+    </nav>
+
+    <div class="category-header">
+        <h1>🎨 Design & Media Tools</h1>
+        <p>Color tools, image processing, and creative design utilities</p>
+    </div>
+
+    <section class="tools-section">
+        <div class="tools-grid">
+            <a href="design/color-picker.html" class="tool-card">
+                <span class="tool-icon">🎨</span>
+                <h3>Color Picker Pro</h3>
+                <p>Pick colors, generate color harmonies, and convert between formats.</p>
+                <span class="tool-badge">Popular</span>
+            </a>
+
+            <a href="design/image-resizer.html" class="tool-card">
+                <span class="tool-icon">🖼️</span>
+                <h3>Image Resizer</h3>
+                <p>Resize and optimize images quickly with drag & drop support.</p>
+                <span class="tool-badge">Popular</span>
+            </a>
+
+            <a href="design/palette-generator.html" class="tool-card">
+                <span class="tool-icon">🎭</span>
+                <h3>Color Palette Generator</h3>
+                <p>Generate beautiful color palettes from images or colors instantly.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="design/gradient-generator.html" class="tool-card">
+                <span class="tool-icon">🌈</span>
+                <h3>Gradient Generator</h3>
+                <p>Create stunning CSS gradients with live preview and code export.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="design/image-compressor.html" class="tool-card">
+                <span class="tool-icon">📦</span>
+                <h3>Image Compressor</h3>
+                <p>Compress images to reduce file size while maintaining quality.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="design/format-converter.html" class="tool-card">
+                <span class="tool-icon">🔄</span>
+                <h3>Image Format Converter</h3>
+                <p>Convert images between PNG, JPG, WebP, and other formats.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="design/svg-to-png.html" class="tool-card">
+                <span class="tool-icon">📐</span>
+                <h3>SVG to PNG Converter</h3>
+                <p>Convert SVG vector graphics to PNG raster images easily.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="productivity.html">Productivity</a>
+                <a href="text-tools.html">Text Tools</a>
+                <a href="developer.html">Developer Tools</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Omni.Daily. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

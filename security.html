@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Privacy Tools - Omni.Daily</title>
+    <meta name="description" content="6 essential security and privacy tools - password generators, hash generators, encryption utilities. Free security tools.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .category-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tools-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #ef4444;
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tool-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .tool-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            background: var(--surface);
+            color: var(--primary);
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tool-badge.popular {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .tool-badge.new {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        footer {
+            background: var(--surface);
+            margin-top: 4rem;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / Security & Privacy
+            </div>
+        </div>
+    </nav>
+
+    <div class="category-header">
+        <h1>🔒 Security & Privacy Tools</h1>
+        <p>Essential security utilities - password generators, encryption, and hash tools</p>
+    </div>
+
+    <section class="tools-section">
+        <div class="tools-grid">
+            <a href="password-generator.html" class="tool-card">
+                <span class="tool-icon">🔐</span>
+                <h3>Password Generator</h3>
+                <p>Generate strong, secure, cryptographically random passwords with custom options.</p>
+                <span class="tool-badge popular">Popular</span>
+            </a>
+
+            <a href="password-strength.html" class="tool-card">
+                <span class="tool-icon">🛡️</span>
+                <h3>Password Strength Checker</h3>
+                <p>Check password strength and get recommendations for improvement.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="hash-generator.html" class="tool-card">
+                <span class="tool-icon">🔑</span>
+                <h3>Hash Generator</h3>
+                <p>Generate MD5, SHA-1, SHA-256, SHA-512 hashes for text and files.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="uuid-generator.html" class="tool-card">
+                <span class="tool-icon">🆔</span>
+                <h3>UUID Generator</h3>
+                <p>Generate universally unique identifiers (UUIDs) v1 and v4.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="random-key-generator.html" class="tool-card">
+                <span class="tool-icon">🎲</span>
+                <h3>Random Key Generator</h3>
+                <p>Generate cryptographically secure random keys for API and encryption.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+
+            <a href="text-encryptor.html" class="tool-card">
+                <span class="tool-icon">🔐</span>
+                <h3>Text Encryptor</h3>
+                <p>Encrypt and decrypt text using AES encryption with password protection.</p>
+                <span class="tool-badge new">New</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="productivity.html">Productivity</a>
+                <a href="design-media.html">Design & Media</a>
+                <a href="developer.html">Developer Tools</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Omni.Daily. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

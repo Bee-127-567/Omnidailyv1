@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Generator - Omni.Daily</title>
+    <meta name="description" content="Create beautiful CSS gradients with live preview. Free gradient generator tool.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gradient-preview {
+            height: 300px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .color-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input {
+            width: 60px;
+            height: 50px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .color-text {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .direction-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .direction-btn {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .direction-btn:hover, .direction-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .code-output {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .code-output h3 {
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary);
+        }
+
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preset {
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 3px solid transparent;
+        }
+
+        .preset:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .direction-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../design-media.html">Design & Media</a> / Gradient Generator
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>🌈 Gradient Generator</h1>
+            <p>Create stunning CSS gradients with live preview</p>
+        </div>
+
+        <div class="gradient-preview" id="preview"></div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Colors</label>
+                <div class="color-inputs">
+                    <div class="color-selector">
+                        <input type="color" id="color1" class="color-input" value="#667eea" onchange="updateGradient()">
+                        <input type="text" id="color1Text" class="color-text" value="#667eea" onchange="updateFromText(1)">
+                    </div>
+                    <div class="color-selector">
+                        <input type="color" id="color2" class="color-input" value="#764ba2" onchange="updateGradient()">
+                        <input type="text" id="color2Text" class="color-text" value="#764ba2" onchange="updateFromText(2)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Direction</label>
+                <div class="direction-buttons">
+                    <button class="direction-btn" onclick="setDirection('to right')">→ Right</button>
+                    <button class="direction-btn" onclick="setDirection('to left')">← Left</button>
+                    <button class="direction-btn" onclick="setDirection('to bottom')">↓ Bottom</button>
+                    <button class="direction-btn" onclick="setDirection('to top')">↑ Top</button>
+                    <button class="direction-btn active" onclick="setDirection('135deg')">↘ Diagonal</button>
+                    <button class="direction-btn" onclick="setDirection('45deg')">↗ Diagonal</button>
+                    <button class="direction-btn" onclick="setDirection('225deg')">↙ Diagonal</button>
+                    <button class="direction-btn" onclick="setDirection('315deg')">↖ Diagonal</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Popular Presets</label>
+                <div class="presets">
+                    <div class="preset" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" onclick="applyPreset('#667eea', '#764ba2')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyPreset('#f093fb', '#f5576c')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyPreset('#4facfe', '#00f2fe')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyPreset('#43e97b', '#38f9d7')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyPreset('#fa709a', '#fee140')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%)" onclick="applyPreset('#30cfd0', '#330867')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" onclick="applyPreset('#a8edea', '#fed6e3')"></div>
+                    <div class="preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" onclick="applyPreset('#ff9a9e', '#fecfef')"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-output">
+            <h3>CSS Code</h3>
+            <div class="code-block">
+                <button class="copy-btn" onclick="copyCode()">Copy</button>
+                <pre id="cssCode">background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let direction = '135deg';
+
+        function updateGradient() {
+            const color1 = document.getElementById('color1').value;
+            const color2 = document.getElementById('color2').value;
+
+            document.getElementById('color1Text').value = color1;
+            document.getElementById('color2Text').value = color2;
+
+            const gradient = `linear-gradient(${direction}, ${color1} 0%, ${color2} 100%)`;
+            document.getElementById('preview').style.background = gradient;
+            document.getElementById('cssCode').textContent = `background: ${gradient};`;
+        }
+
+        function updateFromText(num) {
+            const textValue = document.getElementById(`color${num}Text`).value;
+            document.getElementById(`color${num}`).value = textValue;
+            updateGradient();
+        }
+
+        function setDirection(dir) {
+            direction = dir;
+            document.querySelectorAll('.direction-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateGradient();
+        }
+
+        function applyPreset(color1, color2) {
+            document.getElementById('color1').value = color1;
+            document.getElementById('color2').value = color2;
+            updateGradient();
+        }
+
+        function copyCode() {
+            const code = document.getElementById('cssCode').textContent;
+            navigator.clipboard.writeText(code);
+            
+            const btn = event.target;
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+            }, 2000);
+        }
+
+        // Initialize
+        updateGradient();
+    </script>
+</body>
+</html>

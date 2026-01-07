@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator - Omni.Daily</title>
+    <meta name="description" content="Calculate your exact age in years, months, days, hours, and minutes. Free age calculator tool.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .tool-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .age-display {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .age-number {
+            font-size: 4rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .age-label {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .detail-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .extra-info {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .extra-info h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .extra-info p {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .age-number {
+                font-size: 3rem;
+            }
+
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../productivity.html">Productivity</a> / Age Calculator
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>🎂 Age Calculator</h1>
+            <p>Calculate your exact age in years, months, days, and more</p>
+        </div>
+
+        <div class="tool-content">
+            <div class="input-group">
+                <label>Date of Birth</label>
+                <input type="date" id="birthDate">
+            </div>
+
+            <div class="input-group">
+                <label>Calculate Age On (Optional - defaults to today)</label>
+                <input type="date" id="targetDate">
+            </div>
+
+            <button class="btn" onclick="calculateAge()">Calculate Age</button>
+
+            <div class="result" id="result">
+                <div class="age-display">
+                    <div class="age-number" id="ageYears">0</div>
+                    <div class="age-label">Years Old</div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-value" id="ageMonths">0</div>
+                        <div class="detail-label">Total Months</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="ageDays">0</div>
+                        <div class="detail-label">Total Days</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="ageHours">0</div>
+                        <div class="detail-label">Total Hours</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="ageMinutes">0</div>
+                        <div class="detail-label">Total Minutes</div>
+                    </div>
+                </div>
+
+                <div class="extra-info">
+                    <h4>Detailed Breakdown</h4>
+                    <p id="detailedAge"></p>
+                    <p id="nextBirthday"></p>
+                    <p id="zodiacSign"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default dates
+        const today = new Date();
+        document.getElementById('targetDate').valueAsDate = today;
+
+        function calculateAge() {
+            const birthDate = document.getElementById('birthDate').value;
+            const targetDateValue = document.getElementById('targetDate').value;
+
+            if (!birthDate) {
+                alert('Please enter your date of birth');
+                return;
+            }
+
+            const birth = new Date(birthDate);
+            const target = targetDateValue ? new Date(targetDateValue) : new Date();
+
+            if (birth > target) {
+                alert('Birth date cannot be in the future');
+                return;
+            }
+
+            // Calculate age in years, months, days
+            let years = target.getFullYear() - birth.getFullYear();
+            let months = target.getMonth() - birth.getMonth();
+            let days = target.getDate() - birth.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(target.getFullYear(), target.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Calculate total values
+            const totalMonths = years * 12 + months;
+            const totalDays = Math.floor((target - birth) / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor((target - birth) / (1000 * 60 * 60));
+            const totalMinutes = Math.floor((target - birth) / (1000 * 60));
+
+            // Display results
+            document.getElementById('ageYears').textContent = years;
+            document.getElementById('ageMonths').textContent = totalMonths.toLocaleString();
+            document.getElementById('ageDays').textContent = totalDays.toLocaleString();
+            document.getElementById('ageHours').textContent = totalHours.toLocaleString();
+            document.getElementById('ageMinutes').textContent = totalMinutes.toLocaleString();
+
+            // Detailed breakdown
+            document.getElementById('detailedAge').textContent = 
+                `You are ${years} years, ${months} months, and ${days} days old`;
+
+            // Next birthday
+            const nextBirthday = new Date(target.getFullYear(), birth.getMonth(), birth.getDate());
+            if (nextBirthday < target) {
+                nextBirthday.setFullYear(target.getFullYear() + 1);
+            }
+            const daysToNextBirthday = Math.floor((nextBirthday - target) / (1000 * 60 * 60 * 24));
+            document.getElementById('nextBirthday').textContent = 
+                `Your next birthday is in ${daysToNextBirthday} days`;
+
+            // Zodiac sign
+            const month = birth.getMonth() + 1;
+            const day = birth.getDate();
+            const zodiac = getZodiacSign(month, day);
+            document.getElementById('zodiacSign').textContent = `Your zodiac sign is ${zodiac}`;
+
+            document.getElementById('result').classList.add('show');
+        }
+
+        function getZodiacSign(month, day) {
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'Aquarius ♒';
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'Pisces ♓';
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'Aries ♈';
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'Taurus ♉';
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'Gemini ♊';
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'Cancer ♋';
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'Leo ♌';
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'Virgo ♍';
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'Libra ♎';
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'Scorpio ♏';
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'Sagittarius ♐';
+            return 'Capricorn ♑';
+        }
+    </script>
+</body>
+</html>

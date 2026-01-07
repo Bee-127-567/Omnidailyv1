@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regex Tester - Omni.Daily</title>
+    <meta name="description" content="Test and debug regular expressions with live matching. Free regex tester.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --success: #10b981; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, textarea { width: 100%; padding: 1rem; border: 2px solid var(--border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 1rem; }
+        textarea { min-height: 150px; resize: vertical; }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        .flags { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .flag { display: flex; align-items: center; gap: 0.5rem; }
+        .flag input[type="checkbox"] { width: auto; }
+        .result { margin-top: 2rem; padding: 1.5rem; background: var(--surface); border-radius: 8px; border-left: 4px solid var(--success); }
+        .result h3 { margin-bottom: 1rem; }
+        .match { background: #fef3c7; padding: 0.25rem 0.5rem; border-radius: 4px; margin: 0.25rem 0; }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        .stat-box { background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .examples { margin-top: 2rem; padding: 1.5rem; background: var(--surface); border-radius: 8px; }
+        .examples h4 { margin-bottom: 1rem; }
+        .example { margin-bottom: 0.5rem; padding: 0.5rem; background: white; border-radius: 4px; cursor: pointer; }
+        .example:hover { background: var(--border); }
+        .example code { font-family: 'Courier New', monospace; color: var(--primary); }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } .stats { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="developer.html">Developer</a> / Regex Tester</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🔍 Regex Tester</h1>
+            <p>Test and debug regular expressions with live matching</p>
+        </div>
+        <div class="tool-content">
+            <label>Regular Expression</label>
+            <input type="text" id="regex" placeholder="/pattern/flags" oninput="testRegex()">
+            
+            <div class="flags">
+                <div class="flag">
+                    <input type="checkbox" id="flagG" onchange="testRegex()">
+                    <label for="flagG">g (global)</label>
+                </div>
+                <div class="flag">
+                    <input type="checkbox" id="flagI" onchange="testRegex()">
+                    <label for="flagI">i (case insensitive)</label>
+                </div>
+                <div class="flag">
+                    <input type="checkbox" id="flagM" onchange="testRegex()">
+                    <label for="flagM">m (multiline)</label>
+                </div>
+            </div>
+
+            <label>Test String</label>
+            <textarea id="testString" placeholder="Enter text to test against..." oninput="testRegex()"></textarea>
+
+            <div class="result" id="result" style="display: none;">
+                <h3>Results</h3>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="matchCount">0</div>
+                        <div>Matches Found</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="isValid">✓</div>
+                        <div>Regex Valid</div>
+                    </div>
+                </div>
+                <div id="matches"></div>
+            </div>
+
+            <div class="examples">
+                <h4>Common Patterns (Click to use)</h4>
+                <div class="example" onclick="useExample('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$', 'Email validation')">
+                    <strong>Email:</strong> <code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code>
+                </div>
+                <div class="example" onclick="useExample('^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$', 'URL validation')">
+                    <strong>URL:</strong> <code>^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$</code>
+                </div>
+                <div class="example" onclick="useExample('^\\d{10}$', 'Phone number (10 digits)')">
+                    <strong>Phone (10 digits):</strong> <code>^\d{10}$</code>
+                </div>
+                <div class="example" onclick="useExample('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$', 'Strong password')">
+                    <strong>Strong Password:</strong> <code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$</code>
+                </div>
+                <div class="example" onclick="useExample('^\\d{4}-\\d{2}-\\d{2}$', 'Date (YYYY-MM-DD)')">
+                    <strong>Date:</strong> <code>^\d{4}-\d{2}-\d{2}$</code>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function testRegex() {
+            const regexInput = document.getElementById('regex').value;
+            const testString = document.getElementById('testString').value;
+            const result = document.getElementById('result');
+            const matches = document.getElementById('matches');
+
+            if (!regexInput || !testString) {
+                result.style.display = 'none';
+                return;
+            }
+
+            try {
+                let flags = '';
+                if (document.getElementById('flagG').checked) flags += 'g';
+                if (document.getElementById('flagI').checked) flags += 'i';
+                if (document.getElementById('flagM').checked) flags += 'm';
+
+                const regex = new RegExp(regexInput, flags);
+                const matchResults = testString.match(regex);
+
+                document.getElementById('isValid').textContent = '✓';
+                document.getElementById('isValid').style.color = 'var(--success)';
+
+                if (matchResults) {
+                    document.getElementById('matchCount').textContent = matchResults.length;
+                    matches.innerHTML = '<h4>Matches:</h4>' + 
+                        matchResults.map((m, i) => `<div class="match">Match ${i + 1}: ${m}</div>`).join('');
+                } else {
+                    document.getElementById('matchCount').textContent = '0';
+                    matches.innerHTML = '<p>No matches found</p>';
+                }
+
+                result.style.display = 'block';
+            } catch(e) {
+                document.getElementById('isValid').textContent = '✗';
+                document.getElementById('isValid').style.color = '#ef4444';
+                document.getElementById('matchCount').textContent = '0';
+                matches.innerHTML = `<p style="color: #ef4444;">Invalid regex: ${e.message}</p>`;
+                result.style.display = 'block';
+            }
+        }
+
+        function useExample(pattern, desc) {
+            document.getElementById('regex').value = pattern;
+            testRegex();
+        }
+    </script>
+</body>
+</html>

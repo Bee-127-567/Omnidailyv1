@@ -1,0 +1,27 @@
+# robots.txt for Omni.Daily
+# https://omnidaily.netlify.app
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://omnidaily.netlify.app/sitemap.xml
+
+# Crawl delay (optional, helps prevent server overload)
+Crawl-delay: 1
+
+# Disallow admin or private areas (if any in future)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all tools and pages
+Allow: /*.html
+Allow: /*.css
+Allow: /*.js
+
+# Popular pages - explicitly allow
+Allow: /calculator.html
+Allow: /unit-converter.html
+Allow: /color-picker.html
+Allow: /qr-generator.html
+Allow: /password-generator.html

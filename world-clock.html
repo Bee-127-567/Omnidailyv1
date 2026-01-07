@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clock - Omni.Daily</title>
+    <meta name="description" content="View current time in multiple time zones worldwide. Free world clock tool.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .add-clock {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .clocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .clock-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .clock-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .clock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .city-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+
+        .clock-time {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .clock-date {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .clock-zone {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .day-night {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .day {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .night {
+            background: #1e293b;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            .add-clock {
+                flex-direction: column;
+            }
+
+            .clocks-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../productivity.html">Productivity</a> / World Clock
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>🕐 World Clock</h1>
+            <p>View current time in multiple time zones simultaneously</p>
+        </div>
+
+        <div class="add-clock">
+            <div class="input-group">
+                <label>Add Time Zone</label>
+                <select id="timezoneSelect">
+                    <optgroup label="North America">
+                        <option value="America/New_York">New York (EST/EDT)</option>
+                        <option value="America/Chicago">Chicago (CST/CDT)</option>
+                        <option value="America/Denver">Denver (MST/MDT)</option>
+                        <option value="America/Los_Angeles">Los Angeles (PST/PDT)</option>
+                        <option value="America/Toronto">Toronto</option>
+                        <option value="America/Vancouver">Vancouver</option>
+                        <option value="America/Mexico_City">Mexico City</option>
+                    </optgroup>
+                    <optgroup label="Europe">
+                        <option value="Europe/London">London (GMT/BST)</option>
+                        <option value="Europe/Paris">Paris (CET/CEST)</option>
+                        <option value="Europe/Berlin">Berlin (CET/CEST)</option>
+                        <option value="Europe/Rome">Rome</option>
+                        <option value="Europe/Madrid">Madrid</option>
+                        <option value="Europe/Amsterdam">Amsterdam</option>
+                        <option value="Europe/Moscow">Moscow (MSK)</option>
+                        <option value="Europe/Istanbul">Istanbul</option>
+                    </optgroup>
+                    <optgroup label="Asia">
+                        <option value="Asia/Dubai">Dubai (GST)</option>
+                        <option value="Asia/Kolkata">Mumbai/Delhi (IST)</option>
+                        <option value="Asia/Shanghai">Shanghai (CST)</option>
+                        <option value="Asia/Hong_Kong">Hong Kong</option>
+                        <option value="Asia/Tokyo">Tokyo (JST)</option>
+                        <option value="Asia/Seoul">Seoul</option>
+                        <option value="Asia/Singapore">Singapore (SGT)</option>
+                        <option value="Asia/Bangkok">Bangkok</option>
+                    </optgroup>
+                    <optgroup label="Oceania">
+                        <option value="Australia/Sydney">Sydney (AEST/AEDT)</option>
+                        <option value="Australia/Melbourne">Melbourne</option>
+                        <option value="Australia/Perth">Perth</option>
+                        <option value="Pacific/Auckland">Auckland (NZST/NZDT)</option>
+                    </optgroup>
+                    <optgroup label="South America">
+                        <option value="America/Sao_Paulo">São Paulo</option>
+                        <option value="America/Buenos_Aires">Buenos Aires</option>
+                        <option value="America/Lima">Lima</option>
+                    </optgroup>
+                    <optgroup label="Africa">
+                        <option value="Africa/Cairo">Cairo</option>
+                        <option value="Africa/Johannesburg">Johannesburg</option>
+                        <option value="Africa/Lagos">Lagos</option>
+                    </optgroup>
+                </select>
+            </div>
+            <button class="btn" onclick="addClock()">Add Clock</button>
+        </div>
+
+        <div class="clocks-grid" id="clocksGrid"></div>
+    </div>
+
+    <script>
+        let clocks = [];
+        const defaultClocks = [
+            { city: 'New York', timezone: 'America/New_York' },
+            { city: 'London', timezone: 'Europe/London' },
+            { city: 'Tokyo', timezone: 'Asia/Tokyo' },
+            { city: 'Sydney', timezone: 'Australia/Sydney' }
+        ];
+
+        function init() {
+            // Load clocks from localStorage or use defaults
+            const savedClocks = localStorage.getItem('worldClocks');
+            clocks = savedClocks ? JSON.parse(savedClocks) : defaultClocks;
+            renderClocks();
+            updateAllClocks();
+            setInterval(updateAllClocks, 1000);
+        }
+
+        function addClock() {
+            const select = document.getElementById('timezoneSelect');
+            const timezone = select.value;
+            const cityName = select.options[select.selectedIndex].text.split(' (')[0];
+
+            // Check if clock already exists
+            if (clocks.some(clock => clock.timezone === timezone)) {
+                alert('This clock is already added');
+                return;
+            }
+
+            clocks.push({ city: cityName, timezone: timezone });
+            saveClocks();
+            renderClocks();
+        }
+
+        function removeClock(index) {
+            clocks.splice(index, 1);
+            saveClocks();
+            renderClocks();
+        }
+
+        function renderClocks() {
+            const grid = document.getElementById('clocksGrid');
+            grid.innerHTML = '';
+
+            clocks.forEach((clock, index) => {
+                const card = document.createElement('div');
+                card.className = 'clock-card';
+                card.id = `clock-${index}`;
+                
+                card.innerHTML = `
+                    <div class="clock-header">
+                        <div class="city-name">${clock.city}</div>
+                        <button class="remove-btn" onclick="removeClock(${index})">×</button>
+                    </div>
+                    <div class="clock-time" id="time-${index}">--:--:--</div>
+                    <div class="clock-date" id="date-${index}">---</div>
+                    <div class="clock-zone">${clock.timezone}</div>
+                    <span class="day-night" id="period-${index}">---</span>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function updateAllClocks() {
+            clocks.forEach((clock, index) => {
+                updateClock(clock.timezone, index);
+            });
+        }
+
+        function updateClock(timezone, index) {
+            const now = new Date();
+            
+            // Time
+            const timeString = now.toLocaleTimeString('en-US', {
+                timeZone: timezone,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            // Date
+            const dateString = now.toLocaleDateString('en-US', {
+                timeZone: timezone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Day/Night indicator
+            const hour = parseInt(now.toLocaleTimeString('en-US', {
+                timeZone: timezone,
+                hour: '2-digit',
+                hour12: false
+            }));
+            
+            const isDayTime = hour >= 6 && hour < 18;
+            
+            const timeEl = document.getElementById(`time-${index}`);
+            const dateEl = document.getElementById(`date-${index}`);
+            const periodEl = document.getElementById(`period-${index}`);
+            
+            if (timeEl) timeEl.textContent = timeString;
+            if (dateEl) dateEl.textContent = dateString;
+            if (periodEl) {
+                periodEl.textContent = isDayTime ? '☀️ Day' : '🌙 Night';
+                periodEl.className = `day-night ${isDayTime ? 'day' : 'night'}`;
+            }
+        }
+
+        function saveClocks() {
+            localStorage.setItem('worldClocks', JSON.stringify(clocks));
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>

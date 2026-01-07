@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Beautifier - Omni.Daily</title>
+    <meta name="description" content="Format and beautify HTML, CSS, JavaScript code. Free code beautifier.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); }
+        .tab { padding: 1rem 2rem; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--text-light); transition: all 0.3s; }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        textarea { width: 100%; min-height: 250px; padding: 1rem; border: 2px solid var(--border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95rem; resize: vertical; margin-bottom: 1rem; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; margin-bottom: 1rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: var(--text-light); }
+        .options { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .option { display: flex; align-items: center; gap: 0.5rem; }
+        .option input { width: 60px; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="developer.html">Developer</a> / Code Beautifier</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>✨ Code Beautifier</h1>
+            <p>Format and beautify HTML, CSS, JavaScript code</p>
+        </div>
+        <div class="tool-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchLang('html')">HTML</button>
+                <button class="tab" onclick="switchLang('css')">CSS</button>
+                <button class="tab" onclick="switchLang('js')">JavaScript</button>
+            </div>
+
+            <div class="options">
+                <div class="option">
+                    <label>Indent Size:</label>
+                    <input type="number" id="indentSize" value="2" min="1" max="8">
+                </div>
+            </div>
+
+            <label>Input Code</label>
+            <textarea id="input" placeholder="Paste your code here..."></textarea>
+            <button class="btn" onclick="beautify()">Beautify Code</button>
+            <label>Beautified Code</label>
+            <textarea id="output" placeholder="Beautified code will appear here..." readonly></textarea>
+            <button class="btn btn-secondary" onclick="copyResult()">Copy Beautified Code</button>
+        </div>
+    </div>
+    <script>
+        let currentLang = 'html';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function beautify() {
+            const input = document.getElementById('input').value;
+            const indentSize = parseInt(document.getElementById('indentSize').value) || 2;
+            const indent = ' '.repeat(indentSize);
+            let output = '';
+
+            if (!input) return;
+
+            if (currentLang === 'html') {
+                output = beautifyHTML(input, indent);
+            } else if (currentLang === 'css') {
+                output = beautifyCSS(input, indent);
+            } else if (currentLang === 'js') {
+                output = beautifyJS(input, indent);
+            }
+
+            document.getElementById('output').value = output;
+        }
+
+        function beautifyHTML(code, indent) {
+            let formatted = '';
+            let level = 0;
+            const lines = code.replace(/>\s*</g, '>\n<').split('\n');
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                if (line.match(/^<\//) && level > 0) level--;
+                formatted += indent.repeat(level) + line + '\n';
+                if (line.match(/^<[^\/][^>]*[^\/]>/) && !line.match(/<(br|hr|img|input|meta|link)/)) {
+                    level++;
+                }
+            });
+
+            return formatted.trim();
+        }
+
+        function beautifyCSS(code, indent) {
+            let formatted = code
+                .replace(/\s+/g, ' ')
+                .replace(/\s*{\s*/g, ' {\n' + indent)
+                .replace(/;\s*/g, ';\n' + indent)
+                .replace(/\s*}\s*/g, '\n}\n\n')
+                .replace(/,\s*/g, ',\n')
+                .trim();
+            return formatted;
+        }
+
+        function beautifyJS(code, indent) {
+            let formatted = '';
+            let level = 0;
+            const lines = code.split(/([{};])/);
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                if (line === '}' && level > 0) level--;
+                if (line !== '{' && line !== '}' && line !== ';') {
+                    formatted += indent.repeat(level) + line;
+                }
+                if (line === '{') {
+                    formatted += ' {\n';
+                    level++;
+                } else if (line === '}') {
+                    formatted += indent.repeat(level) + '}\n';
+                } else if (line === ';') {
+                    formatted += ';\n';
+                }
+            });
+
+            return formatted.trim();
+        }
+
+        function copyResult() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy Beautified Code', 2000);
+        }
+    </script>
+</body>
+</html>

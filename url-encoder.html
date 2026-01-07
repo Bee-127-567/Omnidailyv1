@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder/Decoder - Omni.Daily</title>
+    <meta name="description" content="Encode and decode URLs. Free URL encoder tool.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); }
+        .tab { padding: 1rem 2rem; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--text-light); transition: all 0.3s; }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        textarea { width: 100%; min-height: 200px; padding: 1rem; border: 2px solid var(--border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95rem; resize: vertical; margin-bottom: 1rem; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; margin-bottom: 1rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: var(--text-light); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="developer.html">Developer</a> / URL Encoder</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🔗 URL Encoder/Decoder</h1>
+            <p>Encode and decode URLs for safe transmission</p>
+        </div>
+        <div class="tool-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchMode('encode')">Encode</button>
+                <button class="tab" onclick="switchMode('decode')">Decode</button>
+            </div>
+            <div id="encodeMode">
+                <label>Plain URL/Text</label>
+                <textarea id="plainUrl" placeholder="Enter URL or text to encode..."></textarea>
+                <button class="btn" onclick="encodeUrl()">Encode URL</button>
+                <label>Encoded URL</label>
+                <textarea id="encodedUrl" placeholder="Encoded result will appear here..." readonly></textarea>
+                <button class="btn btn-secondary" onclick="copyResult('encodedUrl')">Copy Result</button>
+            </div>
+            <div id="decodeMode" style="display: none;">
+                <label>Encoded URL</label>
+                <textarea id="urlToDecode" placeholder="Enter encoded URL to decode..."></textarea>
+                <button class="btn" onclick="decodeUrl()">Decode URL</button>
+                <label>Decoded URL</label>
+                <textarea id="decodedUrl" placeholder="Decoded result will appear here..." readonly></textarea>
+                <button class="btn btn-secondary" onclick="copyResult('decodedUrl')">Copy Result</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchMode(mode) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('encodeMode').style.display = mode === 'encode' ? 'block' : 'none';
+            document.getElementById('decodeMode').style.display = mode === 'decode' ? 'block' : 'none';
+        }
+        function encodeUrl() {
+            const text = document.getElementById('plainUrl').value;
+            document.getElementById('encodedUrl').value = encodeURIComponent(text);
+        }
+        function decodeUrl() {
+            const text = document.getElementById('urlToDecode').value;
+            try {
+                document.getElementById('decodedUrl').value = decodeURIComponent(text);
+            } catch(e) {
+                alert('Invalid encoded URL');
+            }
+        }
+        function copyResult(id) {
+            const text = document.getElementById(id);
+            text.select();
+            document.execCommand('copy');
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy Result', 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Format Converter - Omni.Daily</title>
+    <meta name="description" content="Convert images between PNG, JPG, WebP formats. Free image converter tool.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea; --secondary: #764ba2; --bg: #ffffff;
+            --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .upload-area { background: white; border: 3px dashed var(--border); border-radius: 12px; padding: 4rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; margin-bottom: 2rem; }
+        .upload-area:hover { border-color: var(--primary); background: var(--surface); }
+        .upload-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .upload-area input { display: none; }
+        .converter { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; }
+        .converter.show { display: block; }
+        .preview { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+        .format-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
+        .format-btn { padding: 1rem; border: 2px solid var(--border); background: white; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .format-btn:hover, .format-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../design-media.html">Design & Media</a> / Format Converter
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>🔄 Image Format Converter</h1>
+            <p>Convert images between PNG, JPG, and WebP</p>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🖼️</div>
+            <h3>Click to upload image</h3>
+            <p style="color: var(--text-light); margin-top: 0.5rem;">Supports PNG, JPG, WebP</p>
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <div class="converter" id="converter">
+            <img id="preview" class="preview">
+            <div class="format-buttons">
+                <button class="format-btn" onclick="convertTo('png')">PNG</button>
+                <button class="format-btn" onclick="convertTo('jpeg')">JPG</button>
+                <button class="format-btn" onclick="convertTo('webp')">WebP</button>
+            </div>
+            <button class="btn" id="downloadBtn">Download Converted Image</button>
+        </div>
+    </div>
+
+    <script>
+        let currentImage = null;
+        let currentFormat = null;
+        let fileName = '';
+
+        document.getElementById('uploadArea').onclick = () => document.getElementById('imageInput').click();
+        document.getElementById('imageInput').onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                fileName = file.name.split('.')[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        currentImage = img;
+                        document.getElementById('preview').src = e.target.result;
+                        document.getElementById('converter').classList.add('show');
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        function convertTo(format) {
+            if (!currentImage) return;
+            currentFormat = format;
+            
+            document.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const canvas = document.createElement('canvas');
+            canvas.width = currentImage.width;
+            canvas.height = currentImage.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(currentImage, 0, 0);
+
+            const mimeType = format === 'jpeg' ? 'image/jpeg' : `image/${format}`;
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                document.getElementById('downloadBtn').onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${fileName}.${format}`;
+                    a.click();
+                };
+            }, mimeType, 0.95);
+        }
+    </script>
+</body>
+</html>

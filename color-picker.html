@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4483784142793299"
+     crossorigin="anonymous"></script>
+<meta charset="UTF-8"><title>Color Picker | Omni.Daily</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:#0f0f0f;color:#fff;padding:40px 20px;min-height:100vh}.container{max-width:1200px;margin:0 auto}.header{text-align:center;margin-bottom:50px}.header h1{font-family:'Playfair Display',serif;font-size:4rem;background:linear-gradient(135deg,#ff6b6b,#4ecdc4,#45b7d1,#96e6a1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px}.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}@media(max-width:768px){.main-grid{grid-template-columns:1fr}}.card{background:rgba(255,255,255,0.05);border-radius:25px;padding:40px;backdrop-filter:blur(10px)}.color-display{width:100%;height:300px;border-radius:20px;margin-bottom:30px;cursor:pointer;transition:transform .3s;box-shadow:0 20px 60px rgba(0,0,0,0.5)}.color-display:hover{transform:scale(1.02)}.input-group{margin-bottom:25px}.input-label{font-size:.9rem;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:2px}.color-input{width:100%;height:80px;border:3px solid rgba(255,255,255,0.1);border-radius:15px;cursor:pointer;transition:all .3s}.value-display{width:100%;padding:15px;background:rgba(0,0,0,0.3);border:2px solid rgba(255,255,255,0.1);border-radius:12px;font-family:'DM Sans',monospace;font-size:1.2rem;color:#fff;text-align:center}.slider-group{margin:20px 0}.slider{width:100%;height:8px;border-radius:4px;outline:none;-webkit-appearance:none}.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;cursor:pointer}.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-top:30px}.palette-color{aspect-ratio:1;border-radius:12px;cursor:pointer;transition:transform .2s}.palette-color:hover{transform:scale(1.1)}.harmony-section{margin-top:30px}.section-title{font-size:1.3rem;color:#4ecdc4;margin-bottom:20px;font-weight:700}.color-value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.value-box{background:rgba(0,0,0,0.3);padding:20px;border-radius:12px;border:2px solid rgba(255,255,255,0.1)}.value-label{font-size:.8rem;color:#999;margin-bottom:8px}.value-text{font-size:1.3rem;font-family:monospace;color:#4ecdc4;font-weight:700;word-break:break-all}.btn{padding:15px 30px;background:linear-gradient(135deg,#4ecdc4,#45b7d1);border:none;border-radius:12px;color:#000;font-weight:700;cursor:pointer;transition:all .3s;width:100%;margin-top:15px}.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(78,205,196,0.4)}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>Color Picker Pro</h1><p>Choose colors and explore harmonies</p></div>
+<div class="main-grid">
+<div class="card">
+<div class="color-display" id="colorDisplay" onclick="document.getElementById('colorPicker').click()"></div>
+<div class="input-group">
+<label class="input-label">Pick Color</label>
+<input type="color" class="color-input" id="colorPicker" value="#4ecdc4">
+</div>
+<div class="slider-group">
+<label class="input-label">Red: <span id="rValue">78</span></label>
+<input type="range" class="slider" id="rSlider" min="0" max="255" value="78" style="background:#ff6b6b">
+</div>
+<div class="slider-group">
+<label class="input-label">Green: <span id="gValue">205</span></label>
+<input type="range" class="slider" id="gSlider" min="0" max="255" value="205" style="background:#4ecdc4">
+</div>
+<div class="slider-group">
+<label class="input-label">Blue: <span id="bValue">196</span></label>
+<input type="range" class="slider" id="bSlider" min="0" max="255" value="196" style="background:#45b7d1">
+</div>
+<button class="btn" onclick="randomColor()">🎲 Random Color</button>
+</div>
+<div class="card">
+<div class="color-value-grid">
+<div class="value-box"><div class="value-label">HEX</div><div class="value-text" id="hexValue">#4ecdc4</div></div>
+<div class="value-box"><div class="value-label">RGB</div><div class="value-text" id="rgbValue">rgb(78, 205, 196)</div></div>
+<div class="value-box"><div class="value-label">HSL</div><div class="value-text" id="hslValue">hsl(176, 56%, 55%)</div></div>
+<div class="value-box"><div class="value-label">CMYK</div><div class="value-text" id="cmykValue">62%, 0%, 4%, 20%</div></div>
+</div>
+<div class="harmony-section">
+<div class="section-title">Complementary</div>
+<div class="palette-grid" id="complementary"></div>
+</div>
+<div class="harmony-section">
+<div class="section-title">Analogous</div>
+<div class="palette-grid" id="analogous"></div>
+</div>
+<button class="btn" onclick="copyHex()">📋 Copy HEX</button>
+</div>
+</div>
+</div>
+<script>
+let currentColor={r:78,g:205,b:196};function updateColor(){const hex=rgbToHex(currentColor.r,currentColor.g,currentColor.b);const hsl=rgbToHsl(currentColor.r,currentColor.g,currentColor.b);const cmyk=rgbToCmyk(currentColor.r,currentColor.g,currentColor.b);document.getElementById('colorDisplay').style.background=hex;document.getElementById('colorPicker').value=hex;document.getElementById('hexValue').textContent=hex;document.getElementById('rgbValue').textContent=`rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`;document.getElementById('hslValue').textContent=`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;document.getElementById('cmykValue').textContent=`${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%`;updateHarmonies()}
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h,s,l=(max+min)/2;if(max===min){h=s=0}else{const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break}}return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)}}
+function rgbToCmyk(r,g,b){const c=1-(r/255),m=1-(g/255),y=1-(b/255),k=Math.min(c,m,y);return{c:Math.round(((c-k)/(1-k)||0)*100),m:Math.round(((m-k)/(1-k)||0)*100),y:Math.round(((y-k)/(1-k)||0)*100),k:Math.round(k*100)}}
+function updateHarmonies(){const hsl=rgbToHsl(currentColor.r,currentColor.g,currentColor.b);const comp=[(hsl.h+180)%360,(hsl.h+150)%360,(hsl.h+210)%360,(hsl.h+120)%360,(hsl.h+240)%360];document.getElementById('complementary').innerHTML=comp.map(h=>`<div class="palette-color" style="background:hsl(${h},${hsl.s}%,${hsl.l}%)"></div>`).join('');const anal=[(hsl.h+30)%360,(hsl.h+15)%360,(hsl.h-15+360)%360,(hsl.h-30+360)%360,(hsl.h+45)%360];document.getElementById('analogous').innerHTML=anal.map(h=>`<div class="palette-color" style="background:hsl(${h},${hsl.s}%,${hsl.l}%)"></div>`).join('')}
+document.getElementById('colorPicker').addEventListener('input',function(){const hex=this.value;currentColor.r=parseInt(hex.substr(1,2),16);currentColor.g=parseInt(hex.substr(3,2),16);currentColor.b=parseInt(hex.substr(5,2),16);document.getElementById('rSlider').value=currentColor.r;document.getElementById('gSlider').value=currentColor.g;document.getElementById('bSlider').value=currentColor.b;document.getElementById('rValue').textContent=currentColor.r;document.getElementById('gValue').textContent=currentColor.g;document.getElementById('bValue').textContent=currentColor.b;updateColor()});['r','g','b'].forEach(c=>{document.getElementById(c+'Slider').addEventListener('input',function(){currentColor[c]=parseInt(this.value);document.getElementById(c+'Value').textContent=this.value;updateColor()})});function randomColor(){currentColor={r:Math.floor(Math.random()*256),g:Math.floor(Math.random()*256),b:Math.floor(Math.random()*256)};document.getElementById('rSlider').value=currentColor.r;document.getElementById('gSlider').value=currentColor.g;document.getElementById('bSlider').value=currentColor.b;document.getElementById('rValue').textContent=currentColor.r;document.getElementById('gValue').textContent=currentColor.g;document.getElementById('bValue').textContent=currentColor.b;updateColor()}
+function copyHex(){navigator.clipboard.writeText(document.getElementById('hexValue').textContent);alert('HEX copied!')}
+updateColor();
+</script>
+</body>
+</html>

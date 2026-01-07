@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator - Omni.Daily</title>
+    <meta name="description" content="Calculate percentages, percentage increase, decrease, and differences. Free percentage calculator.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .calculators-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .calc-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .calc-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-text {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../productivity.html">Productivity</a> / Percentage Calculator
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>📈 Percentage Calculator</h1>
+            <p>Calculate percentages, increases, decreases, and differences</p>
+        </div>
+
+        <div class="calculators-grid">
+            <!-- Basic Percentage -->
+            <div class="calc-card">
+                <h3>What is X% of Y?</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Percentage (%)</label>
+                        <input type="number" id="basic-percent" placeholder="20">
+                    </div>
+                    <div class="input-group">
+                        <label>Of Value</label>
+                        <input type="number" id="basic-value" placeholder="100">
+                    </div>
+                    <button class="btn" onclick="calculateBasic()">Calculate</button>
+                </div>
+                <div class="result" id="basic-result">
+                    <div class="result-value" id="basic-answer"></div>
+                    <div class="result-text" id="basic-text"></div>
+                </div>
+            </div>
+
+            <!-- Percentage Increase -->
+            <div class="calc-card">
+                <h3>Percentage Increase</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Original Value</label>
+                        <input type="number" id="increase-original" placeholder="100">
+                    </div>
+                    <div class="input-group">
+                        <label>New Value</label>
+                        <input type="number" id="increase-new" placeholder="150">
+                    </div>
+                    <button class="btn" onclick="calculateIncrease()">Calculate</button>
+                </div>
+                <div class="result" id="increase-result">
+                    <div class="result-value" id="increase-answer"></div>
+                    <div class="result-text" id="increase-text"></div>
+                </div>
+            </div>
+
+            <!-- Percentage Decrease -->
+            <div class="calc-card">
+                <h3>Percentage Decrease</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Original Value</label>
+                        <input type="number" id="decrease-original" placeholder="150">
+                    </div>
+                    <div class="input-group">
+                        <label>New Value</label>
+                        <input type="number" id="decrease-new" placeholder="100">
+                    </div>
+                    <button class="btn" onclick="calculateDecrease()">Calculate</button>
+                </div>
+                <div class="result" id="decrease-result">
+                    <div class="result-value" id="decrease-answer"></div>
+                    <div class="result-text" id="decrease-text"></div>
+                </div>
+            </div>
+
+            <!-- What Percentage -->
+            <div class="calc-card">
+                <h3>X is what % of Y?</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Value (X)</label>
+                        <input type="number" id="what-x" placeholder="25">
+                    </div>
+                    <div class="input-group">
+                        <label>Of Value (Y)</label>
+                        <input type="number" id="what-y" placeholder="100">
+                    </div>
+                    <button class="btn" onclick="calculateWhatPercent()">Calculate</button>
+                </div>
+                <div class="result" id="what-result">
+                    <div class="result-value" id="what-answer"></div>
+                    <div class="result-text" id="what-text"></div>
+                </div>
+            </div>
+
+            <!-- Percentage Difference -->
+            <div class="calc-card">
+                <h3>Percentage Difference</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Value 1</label>
+                        <input type="number" id="diff-value1" placeholder="100">
+                    </div>
+                    <div class="input-group">
+                        <label>Value 2</label>
+                        <input type="number" id="diff-value2" placeholder="120">
+                    </div>
+                    <button class="btn" onclick="calculateDifference()">Calculate</button>
+                </div>
+                <div class="result" id="diff-result">
+                    <div class="result-value" id="diff-answer"></div>
+                    <div class="result-text" id="diff-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateBasic() {
+            const percent = parseFloat(document.getElementById('basic-percent').value);
+            const value = parseFloat(document.getElementById('basic-value').value);
+
+            if (isNaN(percent) || isNaN(value)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const result = (percent / 100) * value;
+            document.getElementById('basic-answer').textContent = result.toFixed(2);
+            document.getElementById('basic-text').textContent = `${percent}% of ${value} is ${result.toFixed(2)}`;
+            document.getElementById('basic-result').classList.add('show');
+        }
+
+        function calculateIncrease() {
+            const original = parseFloat(document.getElementById('increase-original').value);
+            const newValue = parseFloat(document.getElementById('increase-new').value);
+
+            if (isNaN(original) || isNaN(newValue)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const increase = newValue - original;
+            const percentIncrease = (increase / original) * 100;
+
+            document.getElementById('increase-answer').textContent = percentIncrease.toFixed(2) + '%';
+            document.getElementById('increase-text').textContent = `${original} increased to ${newValue} is a ${percentIncrease.toFixed(2)}% increase`;
+            document.getElementById('increase-result').classList.add('show');
+        }
+
+        function calculateDecrease() {
+            const original = parseFloat(document.getElementById('decrease-original').value);
+            const newValue = parseFloat(document.getElementById('decrease-new').value);
+
+            if (isNaN(original) || isNaN(newValue)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const decrease = original - newValue;
+            const percentDecrease = (decrease / original) * 100;
+
+            document.getElementById('decrease-answer').textContent = percentDecrease.toFixed(2) + '%';
+            document.getElementById('decrease-text').textContent = `${original} decreased to ${newValue} is a ${percentDecrease.toFixed(2)}% decrease`;
+            document.getElementById('decrease-result').classList.add('show');
+        }
+
+        function calculateWhatPercent() {
+            const x = parseFloat(document.getElementById('what-x').value);
+            const y = parseFloat(document.getElementById('what-y').value);
+
+            if (isNaN(x) || isNaN(y) || y === 0) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const percent = (x / y) * 100;
+
+            document.getElementById('what-answer').textContent = percent.toFixed(2) + '%';
+            document.getElementById('what-text').textContent = `${x} is ${percent.toFixed(2)}% of ${y}`;
+            document.getElementById('what-result').classList.add('show');
+        }
+
+        function calculateDifference() {
+            const value1 = parseFloat(document.getElementById('diff-value1').value);
+            const value2 = parseFloat(document.getElementById('diff-value2').value);
+
+            if (isNaN(value1) || isNaN(value2)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const difference = Math.abs(value2 - value1);
+            const average = (value1 + value2) / 2;
+            const percentDiff = (difference / average) * 100;
+
+            document.getElementById('diff-answer').textContent = percentDiff.toFixed(2) + '%';
+            document.getElementById('diff-text').textContent = `The percentage difference between ${value1} and ${value2} is ${percentDiff.toFixed(2)}%`;
+            document.getElementById('diff-result').classList.add('show');
+        }
+    </script>
+</body>
+</html>

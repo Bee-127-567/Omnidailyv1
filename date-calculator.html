@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4483784142793299"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Calculator | Omni.Daily</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(to bottom right, #ffeaa7, #fd79a8, #6c5ce7);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.3);
+        }
+        
+        .header p {
+            color: #2d3436;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+        
+        .calc-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .calc-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .calc-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: #6c5ce7;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #fd79a8;
+            padding-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #2d3436;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .date-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .date-input:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+        
+        .number-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            background: #f8f9fa;
+        }
+        
+        .unit-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .calc-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+        
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffeaa7, #fd79a8);
+            border-radius: 15px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .result-label {
+            font-size: 0.85rem;
+            color: #2d3436;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .result-value {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3436;
+            text-align: center;
+        }
+        
+        .result-details {
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #2d3436;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2.5rem; }
+            .calc-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Date Calculator</h1>
+            <p>Calculate date differences and add/subtract time periods</p>
+        </div>
+        
+        <div class="calculator-grid">
+            <div class="calc-card">
+                <h2 class="calc-title">📅 Date Difference</h2>
+                <div class="input-group">
+                    <label class="input-label">Start Date</label>
+                    <input type="date" class="date-input" id="diffStartDate">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">End Date</label>
+                    <input type="date" class="date-input" id="diffEndDate">
+                </div>
+                <button class="calc-btn" onclick="calculateDifference()">Calculate Difference</button>
+                <div class="result-box" id="diffResult" style="display:none;">
+                    <div class="result-label">Time Between</div>
+                    <div class="result-value" id="diffValue"></div>
+                    <div class="result-details" id="diffDetails"></div>
+                </div>
+            </div>
+            
+            <div class="calc-card">
+                <h2 class="calc-title">➕ Add/Subtract Time</h2>
+                <div class="input-group">
+                    <label class="input-label">Start Date</label>
+                    <input type="date" class="date-input" id="addStartDate">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Operation</label>
+                    <select class="unit-select" id="operation">
+                        <option value="add">Add</option>
+                        <option value="subtract">Subtract</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Amount</label>
+                    <input type="number" class="number-input" id="amount" value="1" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Unit</label>
+                    <select class="unit-select" id="unit">
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                    </select>
+                </div>
+                <button class="calc-btn" onclick="calculateAddSubtract()">Calculate Date</button>
+                <div class="result-box" id="addResult" style="display:none;">
+                    <div class="result-label">Result Date</div>
+                    <div class="result-value" id="addValue"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('diffStartDate').value = today;
+        document.getElementById('diffEndDate').value = today;
+        document.getElementById('addStartDate').value = today;
+        
+        function calculateDifference() {
+            const start = new Date(document.getElementById('diffStartDate').value);
+            const end = new Date(document.getElementById('diffEndDate').value);
+            
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const years = Math.floor(diffDays / 365);
+            const months = Math.floor((diffDays % 365) / 30);
+            const days = diffDays % 30;
+            const weeks = Math.floor(diffDays / 7);
+            const hours = Math.floor(diffTime / (1000 * 60 * 60));
+            
+            document.getElementById('diffValue').textContent = `${diffDays} Days`;
+            document.getElementById('diffDetails').innerHTML = `
+                <strong>Total Time:</strong><br>
+                ${years} years, ${months} months, ${days} days<br>
+                or ${weeks} weeks<br>
+                or ${hours.toLocaleString()} hours<br>
+                or ${(hours * 60).toLocaleString()} minutes
+            `;
+            document.getElementById('diffResult').style.display = 'flex';
+        }
+        
+        function calculateAddSubtract() {
+            const startDate = new Date(document.getElementById('addStartDate').value);
+            const operation = document.getElementById('operation').value;
+            const amount = parseInt(document.getElementById('amount').value);
+            const unit = document.getElementById('unit').value;
+            
+            let result = new Date(startDate);
+            const multiplier = operation === 'add' ? 1 : -1;
+            
+            switch(unit) {
+                case 'days':
+                    result.setDate(result.getDate() + (amount * multiplier));
+                    break;
+                case 'weeks':
+                    result.setDate(result.getDate() + (amount * 7 * multiplier));
+                    break;
+                case 'months':
+                    result.setMonth(result.getMonth() + (amount * multiplier));
+                    break;
+                case 'years':
+                    result.setFullYear(result.getFullYear() + (amount * multiplier));
+                    break;
+            }
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('addValue').textContent = result.toLocaleDateString('en-US', options);
+            document.getElementById('addResult').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

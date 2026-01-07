@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator - Omni.Daily</title>
+    <meta name="description" content="Generate beautiful color palettes from images or colors. Free palette generator tool.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .tool-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .color-box {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-box:hover {
+            transform: scale(1.05);
+        }
+
+        .color-code {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .image-upload {
+            border: 3px dashed var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary);
+            background: var(--surface);
+        }
+
+        .image-upload input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .base-color {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-input {
+            width: 100px;
+            height: 50px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .harmony-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .harmony-btn {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .harmony-btn:hover, .harmony-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .palette {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="../design-media.html">Design & Media</a> / Palette Generator
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tool-header">
+            <h1>🎭 Color Palette Generator</h1>
+            <p>Generate beautiful color palettes from images or colors</p>
+        </div>
+
+        <div class="tool-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('random')">Random Palette</button>
+                <button class="tab" onclick="switchTab('harmony')">Color Harmony</button>
+                <button class="tab" onclick="switchTab('image')">From Image</button>
+            </div>
+
+            <!-- Random Palette -->
+            <div id="random" class="tab-content active">
+                <button class="btn" onclick="generateRandomPalette()">Generate Random Palette</button>
+                <div class="palette" id="randomPalette"></div>
+            </div>
+
+            <!-- Color Harmony -->
+            <div id="harmony" class="tab-content">
+                <div class="base-color">
+                    <label style="font-weight: 600;">Base Color:</label>
+                    <input type="color" id="baseColor" class="color-input" value="#667eea" onchange="generateHarmony()">
+                    <span id="baseColorHex">#667eea</span>
+                </div>
+                
+                <div class="harmony-types">
+                    <button class="harmony-btn active" data-type="complementary" onclick="selectHarmony('complementary')">Complementary</button>
+                    <button class="harmony-btn" data-type="analogous" onclick="selectHarmony('analogous')">Analogous</button>
+                    <button class="harmony-btn" data-type="triadic" onclick="selectHarmony('triadic')">Triadic</button>
+                    <button class="harmony-btn" data-type="tetradic" onclick="selectHarmony('tetradic')">Tetradic</button>
+                    <button class="harmony-btn" data-type="monochromatic" onclick="selectHarmony('monochromatic')">Monochromatic</button>
+                </div>
+
+                <div class="palette" id="harmonyPalette"></div>
+            </div>
+
+            <!-- From Image -->
+            <div id="image" class="tab-content">
+                <div class="image-upload" onclick="document.getElementById('imageInput').click()">
+                    <input type="file" id="imageInput" accept="image/*" onchange="extractColorsFromImage(event)">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">📸 Click to upload image</p>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">Or drag and drop</p>
+                </div>
+                <img id="previewImage" class="preview-image" style="display: none;">
+                <div class="palette" id="imagePalette"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentHarmony = 'complementary';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+
+            if (tab === 'random' && document.getElementById('randomPalette').children.length === 0) {
+                generateRandomPalette();
+            } else if (tab === 'harmony' && document.getElementById('harmonyPalette').children.length === 0) {
+                generateHarmony();
+            }
+        }
+
+        function generateRandomPalette() {
+            const palette = document.getElementById('randomPalette');
+            palette.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                addColorBox(palette, color);
+            }
+        }
+
+        function selectHarmony(type) {
+            currentHarmony = type;
+            document.querySelectorAll('.harmony-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            generateHarmony();
+        }
+
+        function generateHarmony() {
+            const baseColor = document.getElementById('baseColor').value;
+            document.getElementById('baseColorHex').textContent = baseColor;
+            
+            const palette = document.getElementById('harmonyPalette');
+            palette.innerHTML = '';
+
+            const colors = getColorHarmony(baseColor, currentHarmony);
+            colors.forEach(color => addColorBox(palette, color));
+        }
+
+        function getColorHarmony(hex, type) {
+            const hsl = hexToHSL(hex);
+            let colors = [hex];
+
+            switch(type) {
+                case 'complementary':
+                    colors.push(hslToHex((hsl.h + 180) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.min(hsl.l + 20, 100)));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 20, 0)));
+                    colors.push(hslToHex((hsl.h + 180) % 360, hsl.s, hsl.l + 10));
+                    break;
+                case 'analogous':
+                    colors.push(hslToHex((hsl.h + 30) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h - 30 + 360) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h + 60) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h - 60 + 360) % 360, hsl.s, hsl.l));
+                    break;
+                case 'triadic':
+                    colors.push(hslToHex((hsl.h + 120) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h + 240) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.min(hsl.l + 15, 100)));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 15, 0)));
+                    break;
+                case 'tetradic':
+                    colors.push(hslToHex((hsl.h + 90) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h + 180) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex((hsl.h + 270) % 360, hsl.s, hsl.l));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 20, 0)));
+                    break;
+                case 'monochromatic':
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.min(hsl.l + 20, 100)));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.min(hsl.l + 40, 100)));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 20, 0)));
+                    colors.push(hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 40, 0)));
+                    break;
+            }
+
+            return colors;
+        }
+
+        function extractColorsFromImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('previewImage');
+                img.src = e.target.result;
+                img.style.display = 'block';
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                    const colors = extractDominantColors(imageData, 5);
+
+                    const palette = document.getElementById('imagePalette');
+                    palette.innerHTML = '';
+                    colors.forEach(color => addColorBox(palette, color));
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function extractDominantColors(imageData, count) {
+            const colorMap = {};
+            
+            for (let i = 0; i < imageData.length; i += 40) {
+                const r = imageData[i];
+                const g = imageData[i + 1];
+                const b = imageData[i + 2];
+                
+                const hex = rgbToHex(r, g, b);
+                colorMap[hex] = (colorMap[hex] || 0) + 1;
+            }
+
+            return Object.entries(colorMap)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, count)
+                .map(entry => entry[0]);
+        }
+
+        function addColorBox(container, color) {
+            const box = document.createElement('div');
+            box.className = 'color-box';
+            box.style.background = color;
+            box.innerHTML = `<span class="color-code">${color}</span>`;
+            box.onclick = function() {
+                navigator.clipboard.writeText(color);
+                alert(`Copied ${color} to clipboard!`);
+            };
+            container.appendChild(box);
+        }
+
+        function hexToHSL(hex) {
+            const r = parseInt(hex.slice(1, 3), 16) / 255;
+            const g = parseInt(hex.slice(3, 5), 16) / 255;
+            const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                
+                switch(max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+
+            return { h: h * 360, s: s * 100, l: l * 100 };
+        }
+
+        function hslToHex(h, s, l) {
+            l /= 100;
+            const a = s * Math.min(l, 1 - l) / 100;
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`;
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Initialize with random palette
+        generateRandomPalette();
+    </script>
+</body>
+</html>
