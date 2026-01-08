@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryptor - Omni.Daily</title>
+    <meta name="description" content="Encrypt and decrypt text with AES encryption. Free text encryption tool.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); }
+        .tab { padding: 1rem 2rem; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--text-light); transition: all 0.3s; }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, textarea { width: 100%; padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+        textarea { min-height: 150px; font-family: 'Courier New', monospace; resize: vertical; }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 1rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: var(--text-light); }
+        .warning { background: #fef3c7; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #f59e0b; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="security.html">Security</a> / Text Encryptor</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🔐 Text Encryptor</h1>
+            <p>Encrypt and decrypt text using AES encryption</p>
+        </div>
+        <div class="tool-content">
+            <div class="warning">
+                ⚠️ <strong>Note:</strong> Encryption happens in your browser. Keep your password safe - it cannot be recovered if lost.
+            </div>
+            <div class="tabs">
+                <button class="tab active" onclick="switchMode('encrypt')">Encrypt</button>
+                <button class="tab" onclick="switchMode('decrypt')">Decrypt</button>
+            </div>
+            <div id="encryptMode">
+                <label>Password</label>
+                <input type="password" id="encryptPassword" placeholder="Enter encryption password">
+                <label>Text to Encrypt</label>
+                <textarea id="plainText" placeholder="Enter text to encrypt..."></textarea>
+                <button class="btn" onclick="encrypt()">Encrypt Text</button>
+                <div id="encryptResult"></div>
+            </div>
+            <div id="decryptMode" style="display: none;">
+                <label>Password</label>
+                <input type="password" id="decryptPassword" placeholder="Enter decryption password">
+                <label>Encrypted Text</label>
+                <textarea id="encryptedText" placeholder="Enter encrypted text..."></textarea>
+                <button class="btn" onclick="decrypt()">Decrypt Text</button>
+                <div id="decryptResult"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchMode(mode) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('encryptMode').style.display = mode === 'encrypt' ? 'block' : 'none';
+            document.getElementById('decryptMode').style.display = mode === 'decrypt' ? 'block' : 'none';
+        }
+
+        function encrypt() {
+            const password = document.getElementById('encryptPassword').value;
+            const text = document.getElementById('plainText').value;
+            
+            if (!password || !text) {
+                alert('Please enter both password and text');
+                return;
+            }
+
+            const encrypted = CryptoJS.AES.encrypt(text, password).toString();
+            document.getElementById('encryptResult').innerHTML = `
+                <label>Encrypted Text</label>
+                <textarea readonly style="min-height: 150px;">${encrypted}</textarea>
+                <button class="btn btn-secondary" onclick="copy('${encrypted.replace(/'/g, "\\'")}')">Copy Encrypted Text</button>
+            `;
+        }
+
+        function decrypt() {
+            const password = document.getElementById('decryptPassword').value;
+            const encrypted = document.getElementById('encryptedText').value;
+            
+            if (!password || !encrypted) {
+                alert('Please enter both password and encrypted text');
+                return;
+            }
+
+            try {
+                const decrypted = CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8);
+                if (!decrypted) {
+                    throw new Error('Invalid password or corrupted data');
+                }
+                document.getElementById('decryptResult').innerHTML = `
+                    <label>Decrypted Text</label>
+                    <textarea readonly style="min-height: 150px;">${decrypted}</textarea>
+                    <button class="btn btn-secondary" onclick="copy('${decrypted.replace(/'/g, "\\'")}')">Copy Decrypted Text</button>
+                `;
+            } catch(e) {
+                alert('Decryption failed. Check password and encrypted text.');
+            }
+        }
+
+        function copy(text) {
+            navigator.clipboard.writeText(text);
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = event.target.textContent.includes('Encrypted') ? 'Copy Encrypted Text' : 'Copy Decrypted Text', 2000);
+        }
+    </script>
+</body>
+</html>

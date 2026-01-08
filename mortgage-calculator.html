@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Calculator - Omni.Daily</title>
+    <meta name="description" content="Calculate mortgage payments with taxes and insurance. Free mortgage calculator.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input { width: 100%; padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        input:focus { outline: none; border-color: var(--primary); }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 1rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .result-box { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .result-value { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .result-label { font-size: 1.1rem; opacity: 0.9; }
+        .breakdown { background: var(--surface); padding: 1.5rem; border-radius: 8px; }
+        .breakdown-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .breakdown-item:last-child { border-bottom: none; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } .input-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="finance.html">Finance</a> / Mortgage</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🏠 Mortgage Calculator</h1>
+            <p>Calculate monthly mortgage payments with taxes and insurance</p>
+        </div>
+        <div class="tool-content">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Home Price ($)</label>
+                    <input type="number" id="price" value="300000">
+                </div>
+                <div class="input-group">
+                    <label>Down Payment ($)</label>
+                    <input type="number" id="down" value="60000">
+                </div>
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="rate" value="6.5" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Loan Term (Years)</label>
+                    <input type="number" id="years" value="30">
+                </div>
+                <div class="input-group">
+                    <label>Property Tax ($/year)</label>
+                    <input type="number" id="tax" value="3000">
+                </div>
+                <div class="input-group">
+                    <label>Home Insurance ($/year)</label>
+                    <input type="number" id="insurance" value="1200">
+                </div>
+            </div>
+            <button class="btn" onclick="calculate()">Calculate Mortgage</button>
+            <div id="results" style="display: none;">
+                <div class="result-box">
+                    <div class="result-value" id="monthlyPayment">$0</div>
+                    <div class="result-label">Monthly Payment</div>
+                </div>
+                <div class="breakdown">
+                    <h3 style="margin-bottom: 1rem;">Payment Breakdown</h3>
+                    <div class="breakdown-item">
+                        <span>Principal & Interest</span>
+                        <strong id="principalInterest">$0</strong>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Property Tax</span>
+                        <strong id="taxMonthly">$0</strong>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Home Insurance</span>
+                        <strong id="insuranceMonthly">$0</strong>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Loan Amount</span>
+                        <strong id="loanAmount">$0</strong>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total Interest</span>
+                        <strong id="totalInterest">$0</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function calculate() {
+            const price = parseFloat(document.getElementById('price').value);
+            const down = parseFloat(document.getElementById('down').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const years = parseFloat(document.getElementById('years').value);
+            const tax = parseFloat(document.getElementById('tax').value);
+            const insurance = parseFloat(document.getElementById('insurance').value);
+
+            const loanAmount = price - down;
+            const months = years * 12;
+            const monthlyRate = rate / 12;
+            
+            const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+            const monthlyTax = tax / 12;
+            const monthlyInsurance = insurance / 12;
+            const totalMonthly = monthlyPI + monthlyTax + monthlyInsurance;
+            const totalInterest = (monthlyPI * months) - loanAmount;
+
+            document.getElementById('monthlyPayment').textContent = formatCurrency(totalMonthly);
+            document.getElementById('principalInterest').textContent = formatCurrency(monthlyPI);
+            document.getElementById('taxMonthly').textContent = formatCurrency(monthlyTax);
+            document.getElementById('insuranceMonthly').textContent = formatCurrency(monthlyInsurance);
+            document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
+            document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function formatCurrency(value) {
+            return '$' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

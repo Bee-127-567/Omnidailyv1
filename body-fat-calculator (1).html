@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Calculator - Omni.Daily</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #2d3748; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: #718096; font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, select { width: 100%; padding: 0.875rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 1rem; }
+        .result-box { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-top: 2rem; }
+        .result-value { font-size: 3rem; font-weight: 700; }
+        .category { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; }
+        @media (max-width: 768px) { .input-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="health.html">Health</a> / Body Fat</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>📊 Body Fat Calculator</h1>
+            <p>Estimate body fat percentage using US Navy method</p>
+        </div>
+        <div class="tool-content">
+            <label>Gender</label>
+            <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <div class="input-grid">
+                <div><label>Height (cm)</label><input type="number" id="height" value="175"></div>
+                <div><label>Neck (cm)</label><input type="number" id="neck" value="37"></div>
+                <div><label>Waist (cm)</label><input type="number" id="waist" value="85"></div>
+                <div id="hipGroup"><label>Hip (cm)</label><input type="number" id="hip" value="95"></div>
+            </div>
+            <button class="btn" onclick="calc()">Calculate</button>
+            <div id="results" style="display: none;">
+                <div class="result-box">
+                    <div class="result-value" id="bf">0</div>
+                    <div>Body Fat %</div>
+                </div>
+                <div class="category" id="category"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('gender').onchange = function() {
+            document.getElementById('hipGroup').style.display = this.value === 'female' ? 'block' : 'none';
+        };
+        
+        function calc() {
+            const height = parseFloat(document.getElementById('height').value);
+            const neck = parseFloat(document.getElementById('neck').value);
+            const waist = parseFloat(document.getElementById('waist').value);
+            const hip = parseFloat(document.getElementById('hip').value);
+            const gender = document.getElementById('gender').value;
+            
+            let bf;
+            if (gender === 'male') {
+                bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+            } else {
+                bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+            }
+            
+            document.getElementById('bf').textContent = bf.toFixed(1) + '%';
+            
+            let category;
+            if (gender === 'male') {
+                if (bf < 6) category = 'Essential Fat';
+                else if (bf < 14) category = 'Athletes';
+                else if (bf < 18) category = 'Fitness';
+                else if (bf < 25) category = 'Average';
+                else category = 'Obese';
+            } else {
+                if (bf < 14) category = 'Essential Fat';
+                else if (bf < 21) category = 'Athletes';
+                else if (bf < 25) category = 'Fitness';
+                else if (bf < 32) category = 'Average';
+                else category = 'Obese';
+            }
+            
+            document.getElementById('category').textContent = 'Category: ' + category;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

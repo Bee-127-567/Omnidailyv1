@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator - Omni.Daily</title>
+    <meta name="description" content="Calculate tips and split bills easily. Free tip calculator.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 600px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input { width: 100%; padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        input:focus { outline: none; border-color: var(--primary); }
+        .tip-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .tip-btn { padding: 1rem; border: 2px solid var(--border); background: white; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .tip-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .result-box { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 1.5rem 0; }
+        .result-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .result-label { font-size: 1rem; opacity: 0.9; }
+        .breakdown { background: var(--surface); padding: 1.5rem; border-radius: 8px; }
+        .breakdown-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .breakdown-item:last-child { border-bottom: none; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="finance.html">Finance</a> / Tip Calculator</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>💵 Tip Calculator</h1>
+            <p>Calculate tips and split bills with friends</p>
+        </div>
+        <div class="tool-content">
+            <div class="input-group">
+                <label>Bill Amount ($)</label>
+                <input type="number" id="bill" value="100" oninput="calculate()" step="0.01">
+            </div>
+            <label>Tip Percentage</label>
+            <div class="tip-options">
+                <button class="tip-btn" onclick="setTip(15)">15%</button>
+                <button class="tip-btn active" onclick="setTip(18)">18%</button>
+                <button class="tip-btn" onclick="setTip(20)">20%</button>
+            </div>
+            <div class="input-group">
+                <label>Custom Tip (%)</label>
+                <input type="number" id="tip" value="18" oninput="calculate()" step="0.1">
+            </div>
+            <div class="input-group">
+                <label>Number of People</label>
+                <input type="number" id="people" value="1" oninput="calculate()" min="1">
+            </div>
+            <div class="result-box">
+                <div class="result-value" id="perPerson">$0.00</div>
+                <div class="result-label">Per Person</div>
+            </div>
+            <div class="breakdown">
+                <div class="breakdown-item">
+                    <span>Bill Amount</span>
+                    <strong id="billAmount">$0.00</strong>
+                </div>
+                <div class="breakdown-item">
+                    <span>Tip Amount</span>
+                    <strong id="tipAmount">$0.00</strong>
+                </div>
+                <div class="breakdown-item">
+                    <span>Total Amount</span>
+                    <strong id="totalAmount">$0.00</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setTip(percent) {
+            document.querySelectorAll('.tip-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tip').value = percent;
+            calculate();
+        }
+
+        function calculate() {
+            const bill = parseFloat(document.getElementById('bill').value) || 0;
+            const tipPercent = parseFloat(document.getElementById('tip').value) || 0;
+            const people = parseInt(document.getElementById('people').value) || 1;
+
+            const tipAmount = bill * (tipPercent / 100);
+            const totalAmount = bill + tipAmount;
+            const perPerson = totalAmount / people;
+
+            document.getElementById('billAmount').textContent = '$' + bill.toFixed(2);
+            document.getElementById('tipAmount').textContent = '$' + tipAmount.toFixed(2);
+            document.getElementById('totalAmount').textContent = '$' + totalAmount.toFixed(2);
+            document.getElementById('perPerson').textContent = '$' + perPerson.toFixed(2);
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

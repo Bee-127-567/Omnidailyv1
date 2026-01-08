@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro Calculator - Omni.Daily</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #2d3748; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: #718096; font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, select { width: 100%; padding: 0.875rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; }
+        .macros-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+        .macro-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; text-align: center; }
+        .macro-card h3 { margin-bottom: 0.5rem; }
+        .macro-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .macro-grams { font-size: 0.9rem; color: #718096; margin-top: 0.25rem; }
+        @media (max-width: 768px) { .macros-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="health.html">Health</a> / Macro</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🥗 Macro Calculator</h1>
+            <p>Calculate optimal protein, carbs, and fat intake</p>
+        </div>
+        <div class="tool-content">
+            <label>Daily Calories</label>
+            <input type="number" id="calories" value="2000">
+            <label>Goal</label>
+            <select id="goal">
+                <option value="balanced">Balanced (40/30/30)</option>
+                <option value="lowcarb">Low Carb (20/40/40)</option>
+                <option value="highprotein">High Protein (30/40/30)</option>
+                <option value="keto">Keto (5/25/70)</option>
+            </select>
+            <button class="btn" onclick="calc()">Calculate Macros</button>
+            <div id="results" style="display: none;">
+                <div class="macros-grid">
+                    <div class="macro-card">
+                        <h3>Protein</h3>
+                        <div class="macro-value" id="protein">0</div>
+                        <div class="macro-grams" id="proteinG">0g</div>
+                    </div>
+                    <div class="macro-card">
+                        <h3>Carbs</h3>
+                        <div class="macro-value" id="carbs">0</div>
+                        <div class="macro-grams" id="carbsG">0g</div>
+                    </div>
+                    <div class="macro-card">
+                        <h3>Fat</h3>
+                        <div class="macro-value" id="fat">0</div>
+                        <div class="macro-grams" id="fatG">0g</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function calc() {
+            const calories = parseFloat(document.getElementById('calories').value);
+            const goal = document.getElementById('goal').value;
+            
+            const ratios = {
+                balanced: [0.30, 0.40, 0.30],
+                lowcarb: [0.40, 0.20, 0.40],
+                highprotein: [0.40, 0.30, 0.30],
+                keto: [0.25, 0.05, 0.70]
+            };
+            
+            const [proteinRatio, carbRatio, fatRatio] = ratios[goal];
+            
+            const proteinCal = calories * proteinRatio;
+            const carbCal = calories * carbRatio;
+            const fatCal = calories * fatRatio;
+            
+            const proteinG = Math.round(proteinCal / 4);
+            const carbG = Math.round(carbCal / 4);
+            const fatG = Math.round(fatCal / 9);
+            
+            document.getElementById('protein').textContent = Math.round(proteinCal);
+            document.getElementById('proteinG').textContent = proteinG + 'g';
+            document.getElementById('carbs').textContent = Math.round(carbCal);
+            document.getElementById('carbsG').textContent = carbG + 'g';
+            document.getElementById('fat').textContent = Math.round(fatCal);
+            document.getElementById('fatG').textContent = fatG + 'g';
+            
+            document.getElementById('results').style.display = 'block';
+        }
+        calc();
+    </script>
+</body>
+</html>

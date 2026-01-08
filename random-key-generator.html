@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Key Generator - Omni.Daily</title>
+    <meta name="description" content="Generate cryptographically secure random keys. Free random key generator.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #ffffff; --surface: #f8f9fa; --text: #2d3748; --text-light: #718096; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .breadcrumb { color: var(--text-light); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .tool-header { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .tool-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tool-content { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, select { width: 100%; padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 1.5rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .result { background: var(--surface); padding: 1.5rem; border-radius: 8px; word-break: break-all; font-family: 'Courier New', monospace; font-size: 1.1rem; margin-bottom: 1rem; }
+        .btn-secondary { background: var(--text-light); color: white; }
+        @media (max-width: 768px) { .tool-header h1 { font-size: 2rem; } .options { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Omni.Daily</a>
+            <div class="breadcrumb"><a href="index.html">Home</a> / <a href="security.html">Security</a> / Random Key</div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="tool-header">
+            <h1>🎲 Random Key Generator</h1>
+            <p>Generate cryptographically secure random keys</p>
+        </div>
+        <div class="tool-content">
+            <div class="options">
+                <div>
+                    <label>Key Length</label>
+                    <input type="number" id="length" value="32" min="8" max="256">
+                </div>
+                <div>
+                    <label>Format</label>
+                    <select id="format">
+                        <option value="hex">Hexadecimal</option>
+                        <option value="base64">Base64</option>
+                        <option value="alphanumeric">Alphanumeric</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn" onclick="generateKey()">Generate Key</button>
+            <div id="result"></div>
+        </div>
+    </div>
+    <script>
+        function generateKey() {
+            const length = parseInt(document.getElementById('length').value) || 32;
+            const format = document.getElementById('format').value;
+            let key = '';
+
+            if (format === 'hex') {
+                const bytes = new Uint8Array(length);
+                crypto.getRandomValues(bytes);
+                key = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+            } else if (format === 'base64') {
+                const bytes = new Uint8Array(length);
+                crypto.getRandomValues(bytes);
+                key = btoa(String.fromCharCode(...bytes));
+            } else {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const bytes = new Uint8Array(length);
+                crypto.getRandomValues(bytes);
+                key = Array.from(bytes).map(b => chars[b % chars.length]).join('');
+            }
+
+            document.getElementById('result').innerHTML = `
+                <div class="result">${key}</div>
+                <button class="btn btn-secondary" onclick="copy('${key}')">Copy Key</button>
+            `;
+        }
+
+        function copy(text) {
+            navigator.clipboard.writeText(text);
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy Key', 2000);
+        }
+
+        generateKey();
+    </script>
+</body>
+</html>

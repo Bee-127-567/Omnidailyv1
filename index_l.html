@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Omni.Daily - Your ultimate collection of 50+ daily tools, calculators, converters, and utilities. Everything you need in one place.">
+    <meta name="keywords" content="online tools, calculators, converters, utilities, productivity, free tools">
+    <meta name="author" content="Omni.Daily">
+    <meta name="robots" content="index, follow">
+    
+    <title>Omni.Daily - 50+ Free Online Tools, Calculators & Converters</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-omni">Omni</span>
+                <div class="logo-dot"></div>
+                <span class="logo-daily">Daily</span>
+            </a>
+            <nav class="desktop-nav">
+                <a href="#home">Home</a>
+                <a href="#tools">Tools</a>
+                <a href="#categories">Categories</a>
+                <a href="#about">About</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="#home">Home</a>
+            <a href="#tools">Tools</a>
+            <a href="#categories">Categories</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1 class="hero-title">Welcome to <span class="highlight">Omni.Daily</span></h1>
+            <p class="hero-subtitle">Your comprehensive collection of 50+ free online tools, calculators, and converters. Everything you need for your daily tasks, all in one place.</p>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for tools, calculators, converters..." aria-label="Search tools">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h3 class="stat-number">42</h3>
+                    <p class="stat-label">Tools Live</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="stat-number">6/7</h3>
+                    <p class="stat-label">Categories</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="stat-number">84%</h3>
+                    <p class="stat-label">Complete</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="categories-section">
+            <h2 class="section-title">Browse by Category</h2>
+            <p class="section-subtitle">Explore our organized collection across 7 categories</p>
+            
+            <div class="categories-grid">
+                <a href="productivity.html" class="category-card">
+                    <div class="category-icon">📊</div>
+                    <h3 class="category-title">Productivity</h3>
+                    <p class="category-count">8 Tools ✓</p>
+                    <p class="category-desc">Calculators, converters, time tools</p>
+                </a>
+
+                <a href="design-media.html" class="category-card">
+                    <div class="category-icon">🎨</div>
+                    <h3 class="category-title">Design & Media</h3>
+                    <p class="category-count">7 Tools ✓</p>
+                    <p class="category-desc">Color tools, image processing</p>
+                </a>
+
+                <a href="developer.html" class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h3 class="category-title">Developer Tools</h3>
+                    <p class="category-count">9 Tools ✓</p>
+                    <p class="category-desc">Encoders, minifiers, formatters</p>
+                </a>
+
+                <a href="security.html" class="category-card">
+                    <div class="category-icon">🔒</div>
+                    <h3 class="category-title">Security & Privacy</h3>
+                    <p class="category-count">6 Tools ✓</p>
+                    <p class="category-desc">Password, encryption tools</p>
+                </a>
+
+                <a href="finance.html" class="category-card">
+                    <div class="category-icon">💰</div>
+                    <h3 class="category-title">Finance</h3>
+                    <p class="category-count">6 Tools ✓</p>
+                    <p class="category-desc">Financial calculators</p>
+                </a>
+
+                <a href="health.html" class="category-card">
+                    <div class="category-icon">💪</div>
+                    <h3 class="category-title">Health & Fitness</h3>
+                    <p class="category-count">6 Tools ✓</p>
+                    <p class="category-desc">BMI, calorie calculators</p>
+                </a>
+
+                <a href="#tools" class="category-card">
+                    <div class="category-icon">📝</div>
+                    <h3 class="category-title">Text & Writing</h3>
+                    <p class="category-count">8 Tools</p>
+                    <p class="category-desc">Coming Soon</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Popular Tools Section -->
+        <section id="tools" class="tools-section">
+            <h2 class="section-title">Popular Tools</h2>
+            <p class="section-subtitle">Our most-used tools across all categories</p>
+            
+            <div class="tools-grid" id="toolsGrid">
+                <!-- PRODUCTIVITY TOOLS (8) -->
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">🔢</div>
+                    <h3 class="tool-title">Advanced Calculator</h3>
+                    <p class="tool-description">Scientific calculator with history and memory functions.</p>
+                    <a href="calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">📏</div>
+                    <h3 class="tool-title">Unit Converter</h3>
+                    <p class="tool-description">Convert length, weight, temperature, volume, and more.</p>
+                    <a href="unit-converter.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">📅</div>
+                    <h3 class="tool-title">Date Calculator</h3>
+                    <p class="tool-description">Calculate date differences and add/subtract periods.</p>
+                    <a href="date-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">🌍</div>
+                    <h3 class="tool-title">Time Zone Converter</h3>
+                    <p class="tool-description">Convert time between different time zones worldwide.</p>
+                    <a href="time-zone-converter.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">📈</div>
+                    <h3 class="tool-title">Percentage Calculator</h3>
+                    <p class="tool-description">Calculate percentages, increase, and decrease.</p>
+                    <a href="percentage-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">🎂</div>
+                    <h3 class="tool-title">Age Calculator</h3>
+                    <p class="tool-description">Calculate exact age in years, months, and days.</p>
+                    <a href="age-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">⏱️</div>
+                    <h3 class="tool-title">Stopwatch & Timer</h3>
+                    <p class="tool-description">Precise stopwatch and countdown timer.</p>
+                    <a href="stopwatch-timer.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="productivity">
+                    <div class="tool-icon">🕐</div>
+                    <h3 class="tool-title">World Clock</h3>
+                    <p class="tool-description">View current time in multiple time zones.</p>
+                    <a href="world-clock.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <!-- DESIGN & MEDIA TOOLS (7) -->
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">🎨</div>
+                    <h3 class="tool-title">Color Picker Pro</h3>
+                    <p class="tool-description">Pick and convert colors between formats.</p>
+                    <a href="color-picker.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">🎭</div>
+                    <h3 class="tool-title">Palette Generator</h3>
+                    <p class="tool-description">Generate beautiful color palettes instantly.</p>
+                    <a href="palette-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">🌈</div>
+                    <h3 class="tool-title">Gradient Generator</h3>
+                    <p class="tool-description">Create stunning CSS gradients with live preview.</p>
+                    <a href="gradient-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">🖼️</div>
+                    <h3 class="tool-title">Image Resizer</h3>
+                    <p class="tool-description">Resize and optimize images for web.</p>
+                    <a href="image-resizer.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">📦</div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                    <p class="tool-description">Compress images to reduce file size.</p>
+                    <a href="image-compressor.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">🔄</div>
+                    <h3 class="tool-title">Format Converter</h3>
+                    <p class="tool-description">Convert between PNG, JPG, WebP formats.</p>
+                    <a href="format-converter.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="design">
+                    <div class="tool-icon">📐</div>
+                    <h3 class="tool-title">SVG to PNG</h3>
+                    <p class="tool-description">Convert SVG vectors to PNG rasters.</p>
+                    <a href="svg-to-png.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <!-- DEVELOPER TOOLS (9) -->
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">💻</div>
+                    <h3 class="tool-title">JSON Formatter</h3>
+                    <p class="tool-description">Format, validate, and beautify JSON data.</p>
+                    <a href="json-formatter.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">📱</div>
+                    <h3 class="tool-title">QR Code Generator</h3>
+                    <p class="tool-description">Create custom QR codes for URLs and text.</p>
+                    <a href="qr-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">🔤</div>
+                    <h3 class="tool-title">HTML Encoder</h3>
+                    <p class="tool-description">Encode and decode HTML entities safely.</p>
+                    <a href="html-encoder.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">🔗</div>
+                    <h3 class="tool-title">URL Encoder</h3>
+                    <p class="tool-description">Encode and decode URLs for transmission.</p>
+                    <a href="url-encoder.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">🔐</div>
+                    <h3 class="tool-title">Base64 Tool</h3>
+                    <p class="tool-description">Encode and decode Base64 strings.</p>
+                    <a href="base64-tool.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">🔍</div>
+                    <h3 class="tool-title">Regex Tester</h3>
+                    <p class="tool-description">Test regular expressions with live matching.</p>
+                    <a href="regex-tester.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">🎨</div>
+                    <h3 class="tool-title">CSS Minifier</h3>
+                    <p class="tool-description">Minify and compress CSS code.</p>
+                    <a href="css-minifier.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">⚡</div>
+                    <h3 class="tool-title">JS Minifier</h3>
+                    <p class="tool-description">Minify and compress JavaScript code.</p>
+                    <a href="js-minifier.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="developer">
+                    <div class="tool-icon">✨</div>
+                    <h3 class="tool-title">Code Beautifier</h3>
+                    <p class="tool-description">Beautify HTML, CSS, and JavaScript.</p>
+                    <a href="code-beautifier.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <!-- SECURITY TOOLS (6) -->
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🔐</div>
+                    <h3 class="tool-title">Password Generator</h3>
+                    <p class="tool-description">Generate strong, secure passwords.</p>
+                    <a href="password-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🛡️</div>
+                    <h3 class="tool-title">Password Strength</h3>
+                    <p class="tool-description">Check password strength and security.</p>
+                    <a href="password-strength.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🔑</div>
+                    <h3 class="tool-title">Hash Generator</h3>
+                    <p class="tool-description">Generate MD5, SHA-256, SHA-512 hashes.</p>
+                    <a href="hash-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🆔</div>
+                    <h3 class="tool-title">UUID Generator</h3>
+                    <p class="tool-description">Generate unique identifiers (UUIDs).</p>
+                    <a href="uuid-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🎲</div>
+                    <h3 class="tool-title">Random Key</h3>
+                    <p class="tool-description">Generate cryptographically secure keys.</p>
+                    <a href="random-key-generator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="security">
+                    <div class="tool-icon">🔒</div>
+                    <h3 class="tool-title">Text Encryptor</h3>
+                    <p class="tool-description">Encrypt and decrypt text with AES.</p>
+                    <a href="text-encryptor.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <!-- FINANCE TOOLS (6) -->
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">💱</div>
+                    <h3 class="tool-title">Currency Converter</h3>
+                    <p class="tool-description">Convert between world currencies.</p>
+                    <a href="currency-converter.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">🏦</div>
+                    <h3 class="tool-title">Loan Calculator</h3>
+                    <p class="tool-description">Calculate monthly loan payments.</p>
+                    <a href="loan-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">📊</div>
+                    <h3 class="tool-title">Investment Calculator</h3>
+                    <p class="tool-description">Calculate investment returns and growth.</p>
+                    <a href="investment-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">🧾</div>
+                    <h3 class="tool-title">Tax Calculator</h3>
+                    <p class="tool-description">Calculate income tax and take-home pay.</p>
+                    <a href="tax-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">💵</div>
+                    <h3 class="tool-title">Tip Calculator</h3>
+                    <p class="tool-description">Calculate tips and split bills.</p>
+                    <a href="tip-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="finance">
+                    <div class="tool-icon">🏠</div>
+                    <h3 class="tool-title">Mortgage Calculator</h3>
+                    <p class="tool-description">Calculate monthly mortgage payments.</p>
+                    <a href="mortgage-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <!-- HEALTH TOOLS (6) -->
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">⚖️</div>
+                    <h3 class="tool-title">BMI Calculator</h3>
+                    <p class="tool-description">Calculate Body Mass Index.</p>
+                    <a href="bmi-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">🍎</div>
+                    <h3 class="tool-title">Calorie Calculator</h3>
+                    <p class="tool-description">Calculate daily calorie needs.</p>
+                    <a href="calorie-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">💧</div>
+                    <h3 class="tool-title">Water Intake</h3>
+                    <p class="tool-description">Calculate recommended water intake.</p>
+                    <a href="water-intake-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">📊</div>
+                    <h3 class="tool-title">Body Fat Calculator</h3>
+                    <p class="tool-description">Estimate body fat percentage.</p>
+                    <a href="body-fat-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">🥗</div>
+                    <h3 class="tool-title">Macro Calculator</h3>
+                    <p class="tool-description">Calculate protein, carbs, and fat intake.</p>
+                    <a href="macro-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+
+                <article class="tool-card" data-category="health">
+                    <div class="tool-icon">🔥</div>
+                    <h3 class="tool-title">TDEE Calculator</h3>
+                    <p class="tool-description">Calculate Total Daily Energy Expenditure.</p>
+                    <a href="tdee-calculator.html" class="tool-btn">Use Tool</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="section-title">Why Choose Omni.Daily?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">All tools load instantly and work offline.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-description">Your data stays on your device.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Mobile Friendly</h3>
+                    <p class="feature-description">Optimized for all devices.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🆓</div>
+                    <h3 class="feature-title">100% Free</h3>
+                    <p class="feature-description">No subscriptions, no hidden fees.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">No Registration</h3>
+                    <p class="feature-description">Start using tools immediately.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Always Available</h3>
+                    <p class="feature-description">24/7 access with 99.9% uptime.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <h2 class="section-title">About Omni.Daily</h2>
+            <div class="about-text">
+                <p>Omni.Daily is your comprehensive destination for 50+ free online tools and utilities. We provide professional-grade tools accessible to everyone, from students to professionals.</p>
+                
+                <p>Our mission is simple: make powerful tools available to everyone, with no registration required and complete privacy. All processing happens locally in your browser.</p>
+                
+                <p>We continuously add new tools based on user feedback. Currently at 84% completion with 42 tools live across 6 categories!</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-section">
+                    <a href="index.html" class="logo footer-logo">
+                        <span class="logo-omni">Omni</span>
+                        <div class="logo-dot"></div>
+                        <span class="logo-daily">Daily</span>
+                    </a>
+                    <p class="footer-description">50+ free online tools for everyday productivity.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-heading">Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="productivity.html">Productivity</a></li>
+                        <li><a href="design-media.html">Design & Media</a></li>
+                        <li><a href="developer.html">Developer Tools</a></li>
+                        <li><a href="security.html">Security & Privacy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-heading">Popular Tools</h4>
+                    <ul class="footer-links">
+                        <li><a href="calculator.html">Calculator</a></li>
+                        <li><a href="unit-converter.html">Unit Converter</a></li>
+                        <li><a href="password-generator.html">Password Generator</a></li>
+                        <li><a href="qr-generator.html">QR Code Generator</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#categories">All Categories</a></li>
+                        <li><a href="#tools">Browse Tools</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">© 2024 Omni.Daily. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="GitHub">💻</a>
+                    <a href="#" aria-label="LinkedIn">💼</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
